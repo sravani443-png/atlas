@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="style1.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		
+		<link rel="stylesheet" href="evo-calendar.min.css">
+    <link rel="stylesheet" href="evo-calendar.royal-navy.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+	
+</head>
+<body>
+	<div class="whole">
+		<nav class="navbar navbar-expand-lg bg-body-tertiary"	>
+			<div class="container-fluid">
+				<img src="images/logo.png" id="logo">
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav">
+						<a class="nav-link" href="#" id="aONe">Upcoming Events</a>
+	
+						<button class="btn btn-outline-success" onclick="logout()" id="btnOne"><i class="fa fa-fw fa-user"></i>Logout</button>
+					</div>
+				</div>
+			</div>
+		</nav>
+	
+	<p id="upCome">Upcoming Events</p>
+	<div class="horizontal-slider-container" >
+	<ul class="horizonal-slider" id="slider">
+		</ul>
+	  </div>
+	
+	<p id="upCome2">Events Calendar</p>
+	<div class="hero">
+		<div id="calendar"></div>
+</div>
+<p id="upCome3">Know About The Clubs</p>
+<div class="horizontal-slider-container1">
+	
+	<ul class="horizonal-slider">
+	  <li class="item"><div class="card" style="width: 18rem;">
+		<img src="images/manthan.png" class="card-img-top" alt="...">
+		<div class="card-body">
+			<a href="manthan.html" class="btn btn-primary">Know More</a>
+		</div>
+	  </div>
+	  </li>
+	  <li class="item"><div class="card" style="width: 18rem;">
+		<img src="images/wtc.png" class="card-img-top" alt="...">
+		<div class="card-body">
+			<a href="wtc.html" class="btn btn-primary">Know More</a>
+		</div>
+	  </div></li>
+	  <li class="item"><div class="card" style="width: 18rem;">
+		<img src="images/cyberlabs.png" class="card-img-top" alt="...">
+		<div class="card-body">
+			<a href="cyberlabs.html" class="btn btn-primary">Know More</a>
+		</div>
+	  </div></li>
+	</ul>
+  </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+<!-- Add the evo-calendar.js for.. obviously, functionality! -->
+<script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="evo-calendar.min.js"></script>
+<script type="module">
+
+const database = firebase.database();
+let x=[]
+
+database.ref('clubs').on("value",function(snapshot){const data=snapshot.val()
+  let x=[]
+  // console.log(Object.values(data))
+  
+  
+  for (let i=0;i<Object.keys(data).length;i++){
+    for (let j=0;j<Object.keys(Object.values(data)[i]).length;j++)
+    {
+      let k=Object.values((Object.values(data)[i]))[j]
+      console.log(k["name"]+"-"+k["time"]+"-"+k["venue"])
+      x.push({id:k["name"] 
+			  ,name:k["name"]
+			  ,description:("time:-"+k["time"]+"; venue:-"+k["venue"]+";by "+k["clubid"].split("@")[0])
+			   ,date:k["date"]
+			,type:"holiday"
+			,everyYear: true})
+      
+      
+  
+    }
+  }
+ $(document).ready(function() {
+ $('#calendar').evoCalendar({
+	theme: 'Royal Navy',
+	calendarEvents: x})})  
+  
+  })
+
+database.ref('clubs').on("value",function(snapshot){const data=snapshot.val()
+  let formlink=[]
+  let img=[]
+  // console.log(Object.values(data))
+  
+  
+  for (let i=0;i<Object.keys(data).length;i++){
+    for (let j=0;j<Object.keys(Object.values(data)[i]).length;j++)
+    {
+      let k=Object.values((Object.values(data)[i]))[j]
+      
+      formlink.push(k["formlink"])
+      img.push(k["imglink"])
+      
+  
+    }
+  }
+  console.log(formlink)
+  console.log(img)  
+for (let i=1; i< img.length; i++){
+const parentDiv = document.querySelector('#slider');
+
+const newDiv = document.createElement('li');
+newDiv.className = 'item'
+
+const textdiv = document.createElement('li');
+textdiv.appendChild(document.createTextNode("Click For Registration!"));
+const img1 = document.createElement('img');
+img1.src = img[i];
+
+img1.alt = 'Description of Image';
+if (formlink[i] != "null"){
+const link = document.createElement('a');
+link.href = formlink[i];
+link.appendChild(textdiv);
+link.appendChild(img1);
+newDiv.appendChild(link);
+parentDiv.appendChild(newDiv);
+}
+else{
+newDiv.appendChild(img1);
+parentDiv.appendChild(newDiv);}}
+})
+
+</script>
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+ <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+<script src="spam.js"></script>
+</body>
+</html>

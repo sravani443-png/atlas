@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.hero{
+    width: 50%;
+    height: 50%; 
+    margin-left: 15%;
+    margin-top: 5%;
+    
+}
+#calendar{
+    width: 80%;
+    position: absolute;
+    height: 80%;
+}
